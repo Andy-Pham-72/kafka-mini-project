@@ -1,4 +1,4 @@
-package com.github.andy.kafka.tutorial1;
+package com.github.andypham.kafka.miniproject1;
 
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -7,10 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-public class ProducerDemoWithCallback {
+public class ProducerDemo {
     public static void main(String[] args){
-
-        Logger logger = LoggerFactory.getLogger(ProducerDemoWithCallback.class);
 
         String bootstrapServers = "127.0.0.1:9092";
 
@@ -32,23 +30,10 @@ public class ProducerDemoWithCallback {
 
         // create a producer
         ProducerRecord<String, String> record =
-                new ProducerRecord<String, String>("first_topic", "How are you doing?");
+                new ProducerRecord<String, String>("first_topic", "Hello World!");
 
         // send data - asynchronous because it's going to happen in the background
-        producer.send(record, new Callback() {
-            public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-                // executes every time a record is successfully sent or an exception is thrown
-                if (e != null){
-                    // the record was successfully sent
-                    logger.info("Received new metadata. \n "+
-                            "Topic:" + recordMetadata.partition() + "\n" +
-                            "Offset:" + recordMetadata.offset() + "\n" +
-                            "Timestamp:" + recordMetadata.timestamp());
-                } else {
-                    logger.error("Error while producing", e);
-                }
-            }
-        });
+        producer.send(record);
         producer.flush();
         producer.close();
     }
